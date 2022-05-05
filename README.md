@@ -1,7 +1,3 @@
-### <font color='blue'>Our project is about stroke prediction, which take some data from user and return (yes or no) value.</font>
-
-**Steps for the project  :**
-
 <h1 align='center'><font color='blue'> Stroke Detector </h1></font>
 <img src='https://github.com/HabibaShera/AI-project/blob/main/stroke_img.jpg?raw=true'>
 
