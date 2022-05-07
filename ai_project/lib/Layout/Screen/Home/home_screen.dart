@@ -38,17 +38,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(padding: const EdgeInsets.only(bottom: 40), child: Text("Stroke Detector", style: cTextStylePageTitle)),
                           if (screenListner.type != ScreenSizeType.mobile)
                             Row(
-                              children: const [
-                                Expanded(flex: 2, child: InputFieldsWidget()),
-                                Expanded(child: ResultWidget()),
+                              children:  [
+                                Expanded(flex: 2, child: InputFieldsWidget(context)),
+                                const Expanded(child: ResultWidget()),
                               ],
                             ),
                           if (screenListner.type == ScreenSizeType.mobile)
                             Column(
-                              children: const [
-                                InputFieldsWidget(),
-                                SizedBox(height: 20),
-                                ResultWidget(),
+                              children:  [
+                                InputFieldsWidget(context),
+                                const SizedBox(height: 20),
+                                const ResultWidget(),
                               ],
                             ),
                         ],
