@@ -16,12 +16,14 @@ List<String> cWorkTypes = ["Never Worked", "Private", "Self-employed", "Govt jov
 List<String> cSmokingStates = ["Formelly smoking", "Never smoked", "Smoking"];
 List<String> cResidenceTypes = ["Rural", "Urban"];
 //==================================== TextStyles
-TextStyle cTextStyleTitle = TextStyle(fontSize: 20, color: cColorbackground);
-TextStyle cTextStylePageTitle = TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: cColorbackground);
+TextStyle cTextStyleTitle = TextStyle(fontSize: 20, color: cColorMain);
+TextStyle cTextStylePageTitle = TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: cColorMain);
 //==================================== Input Decorations
 InputDecoration kInputDecorationDataField(String title) => InputDecoration(
       hintText: title,
       labelText: title,
+      hintStyle: const TextStyle(color: Colors.white),
+      labelStyle: const TextStyle(color: Colors.white),
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: cColorMain)),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: cColorMain)),
       errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.red)),

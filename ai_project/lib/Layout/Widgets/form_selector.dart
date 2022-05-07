@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class FormSelector<T> extends StatefulWidget {
-  const FormSelector(this.items, this.title, this.onSelect,{Key? key}) : super(key: key);
+  const FormSelector(this.items, this.title, this.onSelect, {Key? key}) : super(key: key);
   final List<T> items;
   final String title;
   final Function(T value) onSelect;
@@ -29,7 +29,10 @@ class _FormSelectorState<T> extends State<FormSelector> {
           widget.onSelect(value);
         }),
         value: btnValue,
-        hint: Text(widget.title),
+        dropdownColor: Colors.grey,
+        elevation: 0,
+        style: TextStyle(color: Colors.white),
+        hint: Text(widget.title, style: TextStyle(color: Colors.white)),
       ),
     );
   }
