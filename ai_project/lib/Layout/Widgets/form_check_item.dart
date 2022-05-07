@@ -21,10 +21,13 @@ class _FormChekItemState extends State<FormChekItem> {
         setState(() => value = val!);
         widget.onCheck(value);
       },
-      title: Text(widget.title),
+      title: Text(
+        widget.title,
+        style: TextStyle(color: Colors.white),
+      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 1, color: cColorMain)),
       checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-      checkColor: Colors.white,
+      checkColor: Colors.black,
       activeColor: cColorMain,
     );
   }

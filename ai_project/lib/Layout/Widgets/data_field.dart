@@ -10,6 +10,9 @@ class DataField extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(decoration: kInputDecorationDataField(title));
+    return TextFormField(
+      decoration: kInputDecorationDataField(title),
+      style: const TextStyle(color: Colors.white),
+    );
   }
 }

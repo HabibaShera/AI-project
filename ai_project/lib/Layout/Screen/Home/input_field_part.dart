@@ -6,23 +6,24 @@ import '../../Widgets/form_selector.dart';
 import '../../constants.dart';
 
 class InputFieldsWidget extends StatefulWidget {
-  const InputFieldsWidget(this.context,{
+  const InputFieldsWidget(
+    this.controller,
+    this.fun, {
     Key? key,
-
   }) : super(key: key);
-  final BuildContext context;
+  final Function(bool) fun;
+  final InputController controller;
   @override
   State<InputFieldsWidget> createState() => _InputFieldsWidgetState();
 }
 
 class _InputFieldsWidgetState extends State<InputFieldsWidget> {
-  InputController controller = InputController();
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 600,
       child: Card(
+        shape: const RoundedRectangleBorder(side: BorderSide(width: 1, color: Colors.white)),
         elevation: 0,
         color: Colors.transparent,
         child: Padding(
@@ -42,13 +43,14 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
 
               Row(children: [
                 //================= Id Field
-                Expanded(child: TextFormField(decoration: kInputDecorationDataField("Id"))),
+                Expanded(child: TextFormField(decoration: kInputDecorationDataField("Id"), style: const TextStyle(color: Colors.white))),
                 const SizedBox(width: 10),
                 //================= Age Field
                 Expanded(
                   child: TextFormField(
                     decoration: kInputDecorationDataField("Age"),
-                    onChanged: (value) => controller.data["age"] = int.parse(value),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (value) => widget.controller.data["age"] = int.parse(value),
                   ),
                 ),
               ]),
@@ -57,13 +59,13 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
                 child: Row(
                   children: [
                     //================= Gendeer Field
-                    Expanded(child: FormSelector<String>(cGenders, "Gender", (value) => controller.data["gender"] = (value == "Male") ? 1 : 0)),
+                    Expanded(child: FormSelector(cGenders, "Gender", (value) => widget.controller.data["gender"] = (value == "Male") ? 1 : 0)),
 
                     //================= Residence Type Field
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: FormSelector<String>(cResidenceTypes, "Residence Type", (value) => controller.data["residence_type"] = (value == "Rural") ? 0 : 1),
+                        child: FormSelector(cResidenceTypes, "Residence Type", (value) => widget.controller.data["residence_type"] = (value == "Rural") ? 0 : 1),
                       ),
                     ),
 
@@ -91,7 +93,7 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
                               cashe = 4;
                               break;
                           }
-                          controller.data["work_type"] = cashe;
+                          widget.controller.data["work_type"] = cashe;
                         },
                       ),
                     ),
@@ -100,7 +102,7 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
               ),
 
               // //================= Married Field
-              // const FormChekItem("Married",(value) => controller.data[""])),
+              // const FormChekItem("Married",(value) => widget.controller.data[""])),
               //================================================== Medical Data Fields
               //================= Title
               Padding(
@@ -119,7 +121,8 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
                     Expanded(
                       child: TextFormField(
                         decoration: kInputDecorationDataField("Average of Glucose level"),
-                        onChanged: (value) => controller.data["avg_glucose_level"] = int.parse(value),
+                        style: const TextStyle(color: Colors.white),
+                        onChanged: (value) => widget.controller.data["avg_glucose_level"] = int.parse(value),
                       ),
                     ),
 
@@ -129,7 +132,8 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: TextFormField(
                           decoration: kInputDecorationDataField("BMI"),
-                          onChanged: (value) => controller.data["bmi"] = int.parse(value),
+                          style: const TextStyle(color: Colors.white),
+                          onChanged: (value) => widget.controller.data["bmi"] = int.parse(value),
                         ),
                       ),
                     ),
@@ -144,7 +148,7 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
                         cashe = 2;
                       else
                         cashe = 3;
-                      controller.data["smoking_status"] = cashe;
+                      widget.controller.data["smoking_status"] = cashe;
                     }))
                   ],
                 ),
@@ -152,22 +156,45 @@ class _InputFieldsWidgetState extends State<InputFieldsWidget> {
               Row(
                 children: [
                   //================= Hyper Tension Field
-                  Expanded(child: FormChekItem("Hyper Tension", (value) => controller.data["hypertension"] = (value) ? 1 : 0)),
+                  Expanded(child: FormChekItem("Hyper Tension", (value) => widget.controller.data["hypertension"] = (value) ? 1 : 0)),
 
                   const SizedBox(width: 10),
                   //================= Heart Disease Field
-                  Expanded(child: FormChekItem("Heart Disease", (value) => controller.data["heart_disease"] = (value) ? 1 : 0)),
+                  Expanded(child: FormChekItem("Heart Disease", (value) => widget.controller.data["heart_disease"] = (value) ? 1 : 0)),
                 ],
               ),
+
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: TextButton(
-                    onPressed: () async => await controller.sendData(),
+                    onPressed: () async {
+                      if (widget.controller.data.length == 9) {
+                        String result = await widget.controller.sendData();
+                        if (result.contains('0'))
+                          widget.fun(true);
+                        else if (result.contains('1')) widget.fun(false);
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: Colors.grey,
+                            title: Row(children: const [
+                              Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Icon(Icons.error_outline, color: Colors.white),
+                              ),
+                              Text("Missing", style: TextStyle(color: Colors.white))
+                            ]),
+                            content: const Text("Please complete the data", maxLines: 2, style: TextStyle(color: Colors.white)),
+                          ),
+                        );
+                      }
+                    },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-                      child: Text("Click", style: TextStyle(color: Colors.white)),
+                      child: Text("Click", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     style: TextButton.styleFrom(
                       backgroundColor: cColorMain,
